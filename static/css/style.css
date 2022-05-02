@@ -14,3 +14,12 @@ textarea.output {
 button {
   margin-top: 5px;
 }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding-left: 1%;
+  text-align: left;
+  font-size: 85%;
+}
