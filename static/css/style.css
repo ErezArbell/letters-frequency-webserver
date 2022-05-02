@@ -1,0 +1,16 @@
+div.error {
+  padding-top: 10px;
+  color: red;
+}
+
+textarea.output {
+  padding-top: 10px;
+  padding-left: 20px;
+  color: green;
+  resize: none;
+  border: none;
+}
+
+button {
+  margin-top: 5px;
+}

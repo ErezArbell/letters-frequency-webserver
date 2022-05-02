@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter Counter</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel= "stylesheet" type= "text/css" href= "static/css/style.css">
+</head>
+
+<body>
+    <h1>Letter Counter</h1>
+
+    <p>Copy here a web link to count the Hebrew letters in it</p>
+
+    <form id="form">
+        <input type="text" size=100 id="url">
+        <div><button type="submit" name="button">Count Letters</button></div>
+    </form>
+
+    <div id="error" class="error"></div>
+    <textarea readonly id="output" class="output"></textarea>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            console.log("Hello");
+            $('#form').on('submit',function(e){
+                $('#output').text('').hide();
+                $('#error').text('').hide();
+                $.ajax({
+                    data: {
+                        url: $('#url').val(),
+                    },
+                    type: 'POST',
+                    url: 'count_letters',
+                    error: function(data){
+                        $('#error').text("Error: " + data.responseJSON.error).show();
+                    },
+                    success: function(data){
+                    $('#output').text(data.output).show();
+                    $('#output').height($('#output')[0].scrollHeight);
+                    }
+                })
+
+                e.preventDefault();
+            });
+        });
+    </script>
+
+</body>
+</html>
