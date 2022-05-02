@@ -1,14 +1,32 @@
-div.error {
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+}
+
+.error {
   padding-top: 10px;
+  padding-left: 20px;
   color: red;
 }
 
-textarea.output {
+.output {
   padding-top: 10px;
   padding-left: 20px;
-  color: green;
-  resize: none;
-  border: none;
+}
+
+table, th, td {
+  border-collapse: collapse;
+  border: 1px solid lightgray;
+}
+
+th, td {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
 }
 
 button {

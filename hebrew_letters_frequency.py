@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import requests
+from tabulate import tabulate
 
 def get_text(url):
     response = requests.get(url)
@@ -28,8 +29,11 @@ def count_letters(url):
         sum += letters[letter]
 
     letters_tupple = [(letter, letters[letter]) for letter in letters]
-    output = ""
-    for letter, count in sorted(letters_tupple, key=lambda a: a[1], reverse=True):
-        output += "%3s%8d%8.1f%%\n" % (letter, count, 0 if sum == 0 else 100.0 * count / sum)
 
-    return output
+    table = [['Letter', 'Count', 'Percentage']]
+    for letter, count in sorted(letters_tupple, key=lambda a: a[1], reverse=True):
+        percentage = 0 if sum == 0 else 100.0 * count / sum
+        percentage = "%.1f%%" % percentage
+        table.append([letter, count, percentage])
+
+    return tabulate(table, tablefmt='html', headers='firstrow')

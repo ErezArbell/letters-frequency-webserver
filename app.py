@@ -20,7 +20,7 @@ def do_count_letters():
         output = count_letters(url)
     except:
         return jsonify({'error' : 'Bad URL or network error'}), 500
-    # return output
+
     return jsonify({'output': output})
 
 

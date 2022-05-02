@@ -19,7 +19,7 @@
     </form>
 
     <div id="error" class="error"></div>
-    <textarea readonly id="output" class="output"></textarea>
+    <div id="output" class="output"></div>
 
 
     <script type="text/javascript">
@@ -38,7 +38,7 @@
                         $('#error').text("Error: " + data.responseJSON.error).show();
                     },
                     success: function(data){
-                    $('#output').text(data.output).show();
+                    $('#output').html(data.output).show();
                     $('#output').height($('#output')[0].scrollHeight);
                     }
                 })
