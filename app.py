@@ -3,6 +3,8 @@ from hebrew_letters_frequency import count_letters
 
 app = Flask(__name__)
 
+_cache = {}
+
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
@@ -16,11 +18,15 @@ def do_count_letters():
     except:
         return jsonify({'error' : 'Check the URL'}), 400
 
+    if url in _cache:
+        return jsonify({'output': _cache[url]})
+
     try:
         output = count_letters(url)
     except:
         return jsonify({'error' : 'Bad URL or network error'}), 500
 
+    _cache[url] = output
     return jsonify({'output': output})
 
 
