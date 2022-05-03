@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, render_template, request
 from hebrew_letters_frequency import count_letters
+from urllib.parse import urlparse
 
 app = Flask(__name__)
 
@@ -15,6 +16,13 @@ def do_count_letters():
         url = request.form['url']
         if url == '':
             raise Exception('Empty URL')
+
+        parsed_url = urlparse(url)
+        if parsed_url.scheme != 'http' and parsed_url.scheme != 'https':
+            return jsonify({'error' : 'Only HTTP and HTTPS are supported'}), 400
+        if parsed_url.query != '' or parsed_url.params != '':
+            return jsonify({'error' : 'URL parameters are not supported'}), 400
+
     except:
         return jsonify({'error' : 'Check the URL'}), 400
 
