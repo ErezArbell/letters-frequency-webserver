@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from flask import Flask, jsonify, render_template, request
 from hebrew_letters_frequency import count_letters
 from urllib.parse import urlparse

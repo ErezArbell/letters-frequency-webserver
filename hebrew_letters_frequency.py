@@ -2,9 +2,14 @@
 import requests
 from tabulate import tabulate
 
+class PageTooBig(Exception):
+    pass
+
 def get_text(url):
-    response = requests.get(url)
-    return response.text
+    r = requests.get(url, stream=True)
+    if int(r.headers['content-length']) > 300*1024:
+        raise PageTooBig
+    return r.content.decode()
 
 hebrew_letters = u"אבגדהוזחטיכלמנסעפצקרשת"
 final_letters = {
@@ -16,8 +21,12 @@ final_letters = {
 }
 letters = { letter: 0 for letter in hebrew_letters }
 
-def count_letters(url):
-    text = get_text(url)
+def count_letters(url, tablefmt='html'):
+    try:
+        text = get_text(url)
+    except PageTooBig:
+        return "Error: page is too big"
+
     for letter in text:
         if letter in final_letters.keys():
             letter = final_letters[letter]
@@ -36,4 +45,9 @@ def count_letters(url):
         percentage = "%.1f%%" % percentage
         table.append([letter, count, percentage])
 
-    return tabulate(table, tablefmt='html', headers='firstrow')
+    return tabulate(table, tablefmt=tablefmt, headers='firstrow')
+
+if __name__ == "__main__":
+    import sys
+    url = sys.argv[1]
+    print(count_letters(url, tablefmt='github'))
