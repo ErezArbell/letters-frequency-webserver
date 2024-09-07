@@ -7,6 +7,22 @@ app = Flask(__name__)
 
 _cache = {}
 
+
+def validate_and_format_url(url):
+    parsed_url = urlparse(url)
+
+    if url == '':
+        raise Exception('Empty URL')
+
+    if not parsed_url.scheme:
+        url = 'http://' + url
+        parsed_url = urlparse(url)
+
+    if parsed_url.scheme not in ['http', 'https']:
+        raise Exception("Only HTTP and HTTPS are supported")
+
+    return url
+
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
@@ -14,18 +30,9 @@ def index():
 @app.route('/count_letters', methods=['POST'])
 def do_count_letters():
     try:
-        url = request.form['url']
-        if url == '':
-            raise Exception('Empty URL')
-
-        parsed_url = urlparse(url)
-        if parsed_url.scheme != 'http' and parsed_url.scheme != 'https':
-            return jsonify({'error' : 'Only HTTP and HTTPS are supported'}), 400
-        if parsed_url.query != '' or parsed_url.params != '':
-            return jsonify({'error' : 'URL parameters are not supported'}), 400
-
+        url = validate_and_format_url(request.form['url'])
     except:
-        return jsonify({'error' : 'Check the URL'}), 400
+        return jsonify({'error': 'Check the URL'}), 400
 
     if url in _cache:
         return jsonify({'output': _cache[url]})
@@ -34,7 +41,7 @@ def do_count_letters():
         counter = HebrewLetterCounter()
         output = counter.count_letters(url)
     except:
-        return jsonify({'error' : 'Bad URL or network error'}), 500
+        return jsonify({'error': 'Bad URL or network error'}), 500
 
     _cache[url] = output
     return jsonify({'output': output})

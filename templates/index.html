@@ -10,11 +10,20 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#form').on('submit', function(e) {
+                e.preventDefault();
                 $('#output').text('').hide();
                 $('#error').text('').hide();
+
+                var url = $('#url').val();
+                var urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?/;
+
+                if (!urlPattern.test(url)) {
+                    $('#error').text("Please enter a valid URL.").show();
+                    return;
+                }
                 $.ajax({
                     data: {
-                        url: $('#url').val(),
+                        url: url,
                     },
                     type: 'POST',
                     url: 'count_letters',
@@ -26,8 +35,6 @@
                         $('#output').height($('#output')[0].scrollHeight);
                     }
                 });
-
-                e.preventDefault();
             });
         });
     </script>
