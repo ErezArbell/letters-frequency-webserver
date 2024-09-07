@@ -37,6 +37,7 @@
                     success: function(data) {
                         output_title = "<div>Hebrew letters count for <a target=_blank href=" + url + ">" + url + "</a>:</div>"
                         $('#output').html(output_title + data.output).show();
+                        $('#output').height('auto');
                         $('#output').height($('#output')[0].scrollHeight);
                     }
                 });
