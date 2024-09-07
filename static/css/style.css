@@ -19,17 +19,29 @@ body {
 }
 
 /* Table Styles */
-table, th, td {
+table {
+  margin-top: 20px;
   border-collapse: collapse;
-  border: 1px solid lightgray;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
-  padding-top: 1px;
-  padding-bottom: 1px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 2px 10px;
   text-align: center;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #b66106;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9; /* Light grey background for even rows */
+}
+
+tr:hover {
+  background-color: #f1f1f1; /* Slightly darker grey for hover effect */
 }
 
 /* Input and Button */
