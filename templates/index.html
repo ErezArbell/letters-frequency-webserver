@@ -5,27 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Letter Counter</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel= "stylesheet" type= "text/css" href= "static/css/style.css">
-</head>
-
-<body>
-    <h1>Letter Counter</h1>
-
-    <p>Copy here a web link to count the Hebrew letters in it</p>
-
-    <form id="form">
-        <input type="text" size=100 id="url">
-        <div><button type="submit" name="button">Count Letters</button></div>
-    </form>
-
-    <div id="error" class="error"></div>
-    <div id="output" class="output"></div>
-
-
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
     <script type="text/javascript">
         $(document).ready(function() {
             console.log("Hello");
-            $('#form').on('submit',function(e){
+            $('#form').on('submit', function(e) {
                 $('#output').text('').hide();
                 $('#error').text('').hide();
                 $.ajax({
@@ -34,24 +18,38 @@
                     },
                     type: 'POST',
                     url: 'count_letters',
-                    error: function(data){
+                    error: function(data) {
                         $('#error').text("Error: " + data.responseJSON.error).show();
                     },
-                    success: function(data){
-                    $('#output').html(data.output).show();
-                    $('#output').height($('#output')[0].scrollHeight);
+                    success: function(data) {
+                        $('#output').html(data.output).show();
+                        $('#output').height($('#output')[0].scrollHeight);
                     }
-                })
+                });
 
                 e.preventDefault();
             });
         });
     </script>
+</head>
 
-<footer class="footer">
-    <p>&copy; 2022, Erez and Evyatar Arbell</p>
-    <p><a href="https://github.com/ErezArbell/letters-frequency-webserver">Source code</a></p>
-</footer>
+<body>
+    <div class="wrapper">
+        <main class="container">
+            <h1>Letter Counter</h1>
+            <p>Copy here a web link to count the Hebrew letters in it</p>
+            <form id="form">
+                <input type="text" id="url" placeholder="Enter URL">
+                <button type="submit" name="button">Count Letters</button>
+            </form>
+            <div id="error" class="error"></div>
+            <div id="output" class="output"></div>
+        </main>
 
+        <footer class="footer">
+            <p>© 2022, Erez and Evyatar Arbell</p>
+            <p><a href="https://github.com/ErezArbell/letters-frequency-webserver">Source code</a></p>
+        </footer>
+    </div>
 </body>
 </html>

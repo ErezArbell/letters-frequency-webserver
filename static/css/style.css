@@ -1,8 +1,8 @@
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
+  background-color: #f5f5f5;
   color: #333;
-  background-color: #fff;
 }
 
 .error {
@@ -29,15 +29,47 @@ th, td {
   text-align: center;
 }
 
+input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 50%;
+  box-sizing: border-box;
+}
+
 button {
-  margin-top: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.wrapper {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  padding-left: 1%;
+  background-color: #333;
+  color: white;
+  padding: 5px 0;
   text-align: left;
   font-size: 85%;
+  padding-left: 1%;
+}
+
+.container {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
