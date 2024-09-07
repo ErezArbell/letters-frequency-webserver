@@ -9,18 +9,16 @@ body {
 /* Error and Output Messages */
 .error {
   padding-top: 10px;
-  padding-left: 20px;
   color: red;
 }
 
 .output {
-  padding-top: 10px;
-  padding-left: 20px;
+  padding-top: 20px;
 }
 
 /* Table Styles */
 table {
-  margin-top: 20px;
+  margin-top: 5px;
   border-collapse: collapse;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
