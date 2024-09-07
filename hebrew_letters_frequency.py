@@ -5,49 +5,60 @@ from tabulate import tabulate
 class PageTooBig(Exception):
     pass
 
-def get_text(url):
-    r = requests.get(url, stream=True)
-    if int(r.headers['content-length']) > 300*1024:
-        raise PageTooBig
-    return r.content.decode()
+class HebrewLetterCounter:
+    def __init__(self):
+        self.hebrew_letters = u"אבגדהוזחטיכלמנסעפצקרשת"
+        self.final_letters = {
+            u'ך': u'כ',
+            u'ם': u'מ',
+            u'ן': u'נ',
+            u'ף': u'פ',
+            u'ץ': u'צ'
+        }
 
-hebrew_letters = u"אבגדהוזחטיכלמנסעפצקרשת"
-final_letters = {
-    u'ך': u'כ',
-    u'ם': u'מ',
-    u'ן': u'נ',
-    u'ף': u'פ',
-    u'ץ': u'צ'
-}
-letters = { letter: 0 for letter in hebrew_letters }
+    def get_text(self, url):
+        try:
+            r = requests.get(url, stream=True, timeout=10)
+            r.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            return f"Error: {e}"
+        try:
+            if int(r.headers['content-length']) > 300*1024:
+                raise PageTooBig
+        except KeyError as e:
+            return f"Error: {e}"
+        return r.content.decode()
 
-def count_letters(url, tablefmt='html'):
-    try:
-        text = get_text(url)
-    except PageTooBig:
-        return "Error: page is too big"
+    def count_letters(self, url, tablefmt='html'):
+        try:
+            text = self.get_text(url)
+            if text.startswith("Error:"):
+                return text
+        except PageTooBig:
+            return "Error: page is too big"
 
-    for letter in text:
-        if letter in final_letters.keys():
-            letter = final_letters[letter]
-        if letter in hebrew_letters:
-            letters[letter] += 1
+        letters = { letter: 0 for letter in self.hebrew_letters }
 
-    sum = 0
-    for letter in letters:
-        sum += letters[letter]
+        for letter in text:
+            if letter in self.final_letters.keys():
+                letter = self.final_letters[letter]
+            if letter in self.hebrew_letters:
+                letters[letter] += 1
 
-    letters_tupple = [(letter, letters[letter]) for letter in letters]
+        total = sum(letters.values())
 
-    table = [['Letter', 'Count', 'Percentage']]
-    for letter, count in sorted(letters_tupple, key=lambda a: a[1], reverse=True):
-        percentage = 0 if sum == 0 else 100.0 * count / sum
-        percentage = "%.1f%%" % percentage
-        table.append([letter, count, percentage])
+        letters_tupple = [(letter, letters[letter]) for letter in letters]
 
-    return tabulate(table, tablefmt=tablefmt, headers='firstrow')
+        table = [['Letter', 'Count', 'Percentage']]
+        for letter, count in sorted(letters_tupple, key=lambda a: a[1], reverse=True):
+            percentage = 0 if total == 0 else 100.0 * count / total
+            percentage = "%.1f%%" % percentage
+            table.append([letter, count, percentage])
+
+        return tabulate(table, tablefmt=tablefmt, headers='firstrow')
 
 if __name__ == "__main__":
     import sys
     url = sys.argv[1]
-    print(count_letters(url, tablefmt='github'))
+    counter = HebrewLetterCounter()
+    print(counter.count_letters(url, tablefmt='github'))

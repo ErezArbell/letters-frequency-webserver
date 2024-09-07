@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from flask import Flask, jsonify, render_template, request
-from hebrew_letters_frequency import count_letters
+from hebrew_letters_frequency import HebrewLetterCounter
 from urllib.parse import urlparse
 
 app = Flask(__name__)
@@ -31,13 +31,13 @@ def do_count_letters():
         return jsonify({'output': _cache[url]})
 
     try:
-        output = count_letters(url)
+        counter = HebrewLetterCounter()
+        output = counter.count_letters(url)
     except:
         return jsonify({'error' : 'Bad URL or network error'}), 500
 
     _cache[url] = output
     return jsonify({'output': output})
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
