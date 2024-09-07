@@ -19,7 +19,7 @@ class HebrewLetterCounter:
     def get_text(self, url):
         r = requests.get(url, stream=True, timeout=10)
         r.raise_for_status()
-        if int(r.headers['content-length']) > 300*1024:
+        if int(r.headers.get('content-length', 0)) > 300*1024:
             raise PageTooBig
         return r.content.decode()
 
