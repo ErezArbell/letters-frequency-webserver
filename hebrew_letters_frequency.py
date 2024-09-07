@@ -17,16 +17,10 @@ class HebrewLetterCounter:
         }
 
     def get_text(self, url):
-        try:
-            r = requests.get(url, stream=True, timeout=10)
-            r.raise_for_status()
-        except requests.exceptions.RequestException as e:
-            return f"Error: {e}"
-        try:
-            if int(r.headers['content-length']) > 300*1024:
-                raise PageTooBig
-        except KeyError as e:
-            return f"Error: {e}"
+        r = requests.get(url, stream=True, timeout=10)
+        r.raise_for_status()
+        if int(r.headers['content-length']) > 300*1024:
+            raise PageTooBig
         return r.content.decode()
 
     def count_letters(self, url, tablefmt='html'):
